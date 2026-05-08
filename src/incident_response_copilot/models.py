@@ -40,6 +40,15 @@ class Incident(BaseModel):
     summary: str
 
 
+class IncidentTriageRequest(BaseModel):
+    id: str | None = None
+    title: str
+    signal_source: str
+    description: str
+    severity_hint: Severity | None = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
 class EvidenceItem(BaseModel):
     id: str
     incident_id: str

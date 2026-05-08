@@ -4,7 +4,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 
-from incident_response_copilot.models import IncidentDetail, IncidentSummary
+from incident_response_copilot.models import IncidentDetail, IncidentSummary, IncidentTriageRequest
 from incident_response_copilot.repository import IncidentRepository
 
 router = APIRouter(prefix="/api")
@@ -36,6 +36,11 @@ def reset_demo(repository: RepositoryDep) -> IncidentSummary:
 @router.get("/incidents")
 def incidents(repository: RepositoryDep):
     return repository.list_incidents()
+
+
+@router.post("/incidents/triage", response_model=IncidentDetail)
+def triage_incident(payload: IncidentTriageRequest, repository: RepositoryDep) -> IncidentDetail:
+    return repository.triage(payload)
 
 
 @router.get("/incidents/{incident_id}", response_model=IncidentDetail)
